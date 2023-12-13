@@ -10,9 +10,6 @@ const app = express();
 
 app.use(bodyParser.json());
 
-
-// mongoose.connect('mongodb+srv://Astha:astha123@cluster0.rpwlnlx.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true });
-
 DbConnect();
 const cryptoSchema = new mongoose.Schema({
   id: { type: String, unique: true },
@@ -31,13 +28,9 @@ const updateCryptoList = async () => {
       "https://api.coingecko.com/api/v3/coins/list"
     );
     const cryptoList = response.data;
-    // console.log(cryptoList);
-
     await Crypto.deleteMany({});
 
      await Crypto.insertMany(cryptoList);
-
-    // console.log("Crypto list updated!", res);
   } catch (error) {
     console.error("Error updating crypto list:", error.message);
   }
@@ -48,15 +41,15 @@ cron.schedule("0 * * * *", updateCryptoList);
 
 
 
-app.get("/getCryptoList", (req, res) => {
-  try {
-    updateCryptoList();
-    res.send("Update job scheduled!");
-  } catch (error) {
-    res.status(500).send("Internal server Error")
-  }
+// app.get("/getCryptoList", (req, res) => {
+//   try {
+//     updateCryptoList();
+//     res.send("Update job scheduled!");
+//   } catch (error) {
+//     res.status(500).send("Internal server Error")
+//   }
 
-});
+// });
 
 
 
